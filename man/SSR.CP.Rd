@@ -54,7 +54,7 @@ N1 <- 248
 pstar <- 0.15
 alpha <- 0.05
 beta <- 0.2
-SSR.CP(Z1 = Z1, delta = delta, N1 = N1,
+res <- SSR.CP(Z1 = Z1, delta = delta, N1 = N1,
        pstar = pstar, alpha = alpha, beta = beta)
 
 }

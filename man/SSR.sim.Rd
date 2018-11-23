@@ -55,7 +55,7 @@ theta0 <- 0
 sigma0 <- 1.0
 nSim <- 1000
 Seed <- 6
-SSR.sim(N = N, rho = rho, alpha = alpha, beta = beta, theta = theta,
+res <- SSR.sim(N = N, rho = rho, alpha = alpha, beta = beta, theta = theta,
         theta0 = theta0, sigma0 = sigma0, pstar = pstar,
         nSim = nSim, Seed = Seed)
 }

@@ -5,17 +5,20 @@
 \title{Conduct the simulation studies of the Adaptive Enrichment Design
   (Strategy 1) with Sample Size Re-estimation Procedure}
 \usage{
-AED1_SSR.sim(N, rho, alpha, beta, theta, theta0, Info, K = 2, epsilon, sigma0,
-  nSim, Seed)
+AED1_SSR.sim(N1, rho, alpha, beta, pstar, theta, theta0, Info, K = 2,
+  epsilon, sigma0, nSim, Seed)
 }
 \arguments{
-\item{N}{The sample size used at the first stage}
+\item{N1}{The sample size used at the first stage}
 
 \item{rho}{The proportion of subgroup 1 among the overall patients}
 
 \item{alpha}{The overall Type I error rate}
 
 \item{beta}{The (1 - Power)}
+
+\item{pstar}{The \code{(1 - power)} of accepting the null hypothesis at the
+interim analysis.}
 
 \item{theta}{The sizes of the treatment effect in subgroups 1 and 2 with the
 experimental arm}
@@ -55,20 +58,11 @@ The \code{AED1_SSR.sim()} is used to conduct the simulation study
   procedure
 }
 \examples{
-N <- 310
-rho <- 0.5
-alpha <- 0.025
-beta <- 0.2
-theta <- c(0,0)
-theta0 <- 0
-Info <- 0.5
-epsilon <- 0.5
-sigma0 <- 1
-nSim <- 1000
-Seed <- 6
-AED1_SSR.sim(N = N, rho = rho, alpha = alpha, beta = beta,
-             theta = theta, theta0 = theta0, Info = Info,
-             epsilon = epsilon, sigma0 = sigma0, nSim = nSim, Seed = Seed)
+res <- AED1_SSR.sim(
+  N1 = 310, rho = 0.5,
+  alpha = 0.05, beta = 0.2, pstar = 0.2,
+  theta = c(0,0), theta0 = 0, Info = 0.5,
+  epsilon = 0.5, sigma0 = 1, nSim = 1000, Seed = 6)
 }
 \references{
 \itemize{

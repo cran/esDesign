@@ -5,20 +5,23 @@
 \title{Calculate the conditional power of the Adaptive Enrichment Design with
   (Strategy 1) Sample Size Re-estimation Procedure}
 \usage{
-AED1_SSR.CP(c, z1, N1, N2)
+AED1_SSR.CP(c, Z1, N1, N2)
 }
 \arguments{
 \item{c}{The critical value used at the final analysis}
 
-\item{z1}{The test statistic obtained at the interim analysis}
+\item{Z1}{The test statistic obtained at the interim analysis}
 
 \item{N1}{The sample size used at the first stage}
 
 \item{N2}{The sample size used at the second stage}
 }
 \value{
-The value of the conditional power in the Adaptive Enrichment Design
-  (Strategy 1) with Sample Size Re-estimation Procedure
+A list contains
+\itemize{
+  \item Critical.Value The critical value used at the final analysis
+  \item Conditional.Power The value of conditional power given the observed data
+}
 }
 \description{
 The \code{AED1_SSR.CP()} is used to calculate the conditional
@@ -27,10 +30,10 @@ The \code{AED1_SSR.CP()} is used to calculate the conditional
 }
 \examples{
 c <- 2.258
-z1 <- 1.975
+Z1 <- 1.975
 N1 <- 248
 N2 <- 200
-AED1_SSR.CP(c = 2.258, z1 = 1.974, N1 = 248, N2 = 200)
+AED1_SSR.CP(c = 2.258, Z1 = 1.974, N1 = 248, N2 = 200)
 }
 \references{
 \itemize{

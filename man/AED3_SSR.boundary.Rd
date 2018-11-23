@@ -32,5 +32,5 @@ The \code{AED3_SSR.boundary()} is used to calculate the futility
 rho <- 0.5
 alpha <- 0.05
 pstar <- 0.15
-AED3_SSR.boundary(rho = rho, alpha = alpha, pstar = pstar)
+res <- AED3_SSR.boundary(rho = rho, alpha = alpha, pstar = pstar)
 }

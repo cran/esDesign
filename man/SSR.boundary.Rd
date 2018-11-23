@@ -28,7 +28,7 @@ The \code{SSD.boundary()} is used to calculate the futility
 \examples{
 alpha <- 0.05
 pstar <- 0.2
-SSR.boundary(alpha = alpha, pstar = pstar)
+res <- SSR.boundary(alpha = alpha, pstar = pstar)
 
 }
 \references{

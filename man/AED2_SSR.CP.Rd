@@ -6,7 +6,7 @@
   Enrichment Design (Strategy 2) with Sample Size Re-estimation Procedure}
 \usage{
 AED2_SSR.CP(Z1 = NULL, delta = NULL, N1 = NULL, pstar, rho, epsilon,
-  alpha, beta, N2)
+  alpha, beta, N2 = NULL)
 }
 \arguments{
 \item{Z1}{The test statistic obtained at the interim analysis}
@@ -34,6 +34,8 @@ to conduct the conditional power analysis}
 \value{
 A list contains
 \itemize{
+  \item upper.boundary The efficacy stopping boundary
+  \item lower.boundary The futility stopping boundary
   \item N2 The pre-specified sample size used at the second stage, which is
           used to implement the conditional power analysis
   \item Conditional.Power The value of conditional power given the value of \code{N2} in the
@@ -62,8 +64,8 @@ alpha <- 0.05
 rho <- 0.5
 epsilon <- 0.5
 beta <- 0.20
-N2 <- 108
-AED2_SSR.CP(Z1 = Z1, delta = delta, N1 = N1, pstar = pstar,
+N2 <- 104
+res <- AED2_SSR.CP(Z1 = Z1, delta = delta, N1 = N1, pstar = pstar,
            alpha = alpha, rho = rho, epsilon = epsilon,
            beta = beta, N2 = N2)
 

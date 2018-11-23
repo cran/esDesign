@@ -5,11 +5,11 @@
 \title{Conduct the simulation studies of the Adaptive Enrichment Design (Strategy 2)
   with Sample Size Re-estimation Procedure}
 \usage{
-AED2_SSR.sim(N, rho, alpha, beta, pstar, theta, theta0, sigma0, epsilon, nSim,
-  Seed)
+AED2_SSR.sim(N1, rho, alpha, beta, pstar, theta, theta0, sigma0, epsilon,
+  nSim, Seed)
 }
 \arguments{
-\item{N}{The sample size used in the first stage}
+\item{N1}{The sample size used in the first stage}
 
 \item{rho}{The proportion of subgroup 1}
 
@@ -68,7 +68,7 @@ epsilon <- 0.5
 pstar <- 0.20
 nSim <- 1000
 Seed <- 6
-AED2_SSR.sim(N = N, rho = rho, alpha = alpha,
+res <- AED2_SSR.sim(N1 = N, rho = rho, alpha = alpha,
              beta = beta, theta = theta, theta0 = theta0,
              sigma0 = sigma0, pstar = pstar, epsilon = epsilon,
              nSim = nSim, Seed = Seed)

@@ -5,15 +5,21 @@
 \title{Calculate the critical value used at the final analysis of the
   Adaptive Enrichment Design (Strategy 1) with Sample Size Re-estimation Procedure}
 \usage{
-AED1_SSR.boundary(alpha, Info, K = 2)
+AED1_SSR.boundary(rho, alpha, pstar, Info, epsilon)
 }
 \arguments{
-\item{alpha}{The overall Type I error rate}
+\item{rho}{The proportion of subgroup 1.}
+
+\item{alpha}{The overall Type I error rate.}
+
+\item{pstar}{The \code{(1 - power)} of accepting the null hypothesis at the
+interim analysis.}
 
 \item{Info}{The observation information, which is commonly calculated through
 the sample size used at each stage of the trial.}
 
-\item{K}{The number of subgroups. The default value is 2.}
+\item{epsilon}{The threshold of the difference between subgroup-specific test
+statistics.}
 }
 \description{
 The \code{AED1_SSR.boundary()} is used to calculate the critical
@@ -24,17 +30,10 @@ The \code{AED1_SSR.boundary()} is used to calculate the critical
   threshold of the difference between the subgroup-specific test statistics.
 }
 \examples{
-alpha <- 0.05
-Info <- 0.5
-K <- 2
-AED1_SSR.boundary(alpha = alpha, Info = Info, K = K)
-
+AED1_SSR.boundary(rho = 0.5, alpha = 0.05, pstar = 0.2, Info = 0.5, epsilon = 0.5)
 }
 \references{
 \itemize{
-  \item Chang, M., and Wang, J. (2015). The add-arm design for unimodal
-        response curve with unknown mode. Journal of biopharmaceutical
-        statistics, 25(5), 1039-1064. <doi:10.1080/10543406.2014.971164.>
   \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
     Re-estimation in Adaptive Enrichment Trials. (In preparation)
 }

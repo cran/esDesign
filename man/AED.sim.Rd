@@ -5,8 +5,8 @@
 \title{Conduct the simulation studies of the Adaptive Enrichment Design without
   early stopping boundary}
 \usage{
-AED.sim(N1, N2, rho, alpha, beta, theta, theta0, K, Info, epsilon, sigma0, nSim,
-  Seed)
+AED.sim(N1, N2, rho, alpha, beta, theta, theta0, K, Info, epsilon, sigma0,
+  nSim, Seed)
 }
 \arguments{
 \item{N1}{The sample size used at the first stage}

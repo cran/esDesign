@@ -169,7 +169,7 @@ SD.sim <- function(N, rho, alpha, beta, theta, theta0, sigma0, nSim, Seed) {
 #' @examples
 #' alpha <- 0.05
 #' pstar <- 0.2
-#' SSR.boundary(alpha = alpha, pstar = pstar)
+#' res <- SSR.boundary(alpha = alpha, pstar = pstar)
 #'
 #' @export
 SSR.boundary <- function(alpha, pstar) {
@@ -182,7 +182,11 @@ SSR.boundary <- function(alpha, pstar) {
   }
 
   upper.boundary <- uniroot(f2, c(zp, 4))$root
-
+  cat("\n")
+  cat("Futility/Efficacy stopping boundaries for SSR:\n")
+  cat("\n")
+  cat("The futility stopping boundary = ", round(zp,3), ".\n")
+  cat("The efficacy stopping boundary = ", round(upper.boundary,3), ".\n")
   return(list(upper.boundary = upper.boundary,
               lower.boundary = zp))
 }
@@ -234,7 +238,7 @@ SSR.boundary <- function(alpha, pstar) {
 #' sigma0 <- 1.0
 #' nSim <- 1000
 #' Seed <- 6
-#' SSR.sim(N = N, rho = rho, alpha = alpha, beta = beta, theta = theta,
+#' res <- SSR.sim(N = N, rho = rho, alpha = alpha, beta = beta, theta = theta,
 #'         theta0 = theta0, sigma0 = sigma0, pstar = pstar,
 #'         nSim = nSim, Seed = Seed)
 #' @export
@@ -248,6 +252,8 @@ SSR.sim <- function(N, rho, alpha, beta, theta, theta0, sigma0, pstar, nSim, See
   #n12 <- N * (1 - rho)
   ## Boundaries
   zp <- qnorm(1 - pstar) ## lower boundary of the intervals
+  cat("\n")
+  cat("## Summary of SSR: \n")
   k <- SSR.boundary(alpha = alpha, pstar = pstar)$upper.boundary
   zb <- qnorm(1 - beta)
   ##k <- 2.223702
@@ -286,6 +292,13 @@ SSR.sim <- function(N, rho, alpha, beta, theta, theta0, sigma0, pstar, nSim, See
     }
 
   } # nSim
+  cat("\n")
+  cat("The expected sample size = ", ceiling(nTotal), "\n")
+  cat("The overall power = ", round((count2 + count3)/nSim*100, 1), "%. \n")
+  cat("\n")
+  cat("Pr(Early stopping for futility) = ", round(count2/nSim*100,1), "%. \n")
+  cat("Pr(Early stopping for efficacy) = ", round(count1/nSim*100,1), "%. \n")
+  cat("\n")
   return(list(nTotal = ceiling(nTotal),
               H0 = round((count2 + count3)/nSim*100, 1),
               ESF = round(count1/nSim*100,1),
@@ -341,7 +354,7 @@ SSR.sim <- function(N, rho, alpha, beta, theta, theta0, sigma0, pstar, nSim, See
 #' pstar <- 0.15
 #' alpha <- 0.05
 #' beta <- 0.2
-#' SSR.CP(Z1 = Z1, delta = delta, N1 = N1,
+#' res <- SSR.CP(Z1 = Z1, delta = delta, N1 = N1,
 #'        pstar = pstar, alpha = alpha, beta = beta)
 #'
 #' @export
@@ -363,10 +376,22 @@ SSR.CP <- function(Z1 = NULL, delta = NULL, N1 = NULL,
     cp <- 1 - pnorm(za - sqrt(N2/2)*delta)
     c <- (sqrt(N1)*z1 + sqrt(N2)*za)/(sqrt(N1 + N2))
     p <- 1 - pnorm(c)
+    cat("\n")
+    cat("Conditional power analysis: \n")
+    cat("\n")
+    cat("The conditional power = ", round(cp*100,1), "%, given N2 = ", N2, ".\n")
+    cat("The exact critical value used at the final analysis = ", round(c, 3),
+        ", with the corresponding P-Value = ",round(p,4), ".\n")
+    cat("\n")
   }
   zb <- qnorm(1 - beta)
   N2.CP <- n1 * (za + zb)^2/z1^2
   c.CP <- (z1^2 + za*(za + zb))/(sqrt(z1^2 + (za + zb)^2))
+  cat("\n")
+  cat("The N2 required at the second stage = ", ceiling(N2.CP)*2, ".\n")
+  cat("The estimated critical value used at final analysis = ", round(c.CP, 3), ".\n")
+  cat("\n")
+
   return(list(N2 = N2, Conditional.Power = cp,
               P.Value = p, N2.CP = 2*ceiling(N2.CP), c.CP = c.CP))
 }
@@ -395,7 +420,7 @@ SSR.CP <- function(Z1 = NULL, delta = NULL, N1 = NULL,
 #' rho <- 0.5
 #' alpha <- 0.05
 #' pstar <- 0.15
-#' AED3_SSR.boundary(rho = rho, alpha = alpha, pstar = pstar)
+#' res <- AED3_SSR.boundary(rho = rho, alpha = alpha, pstar = pstar)
 #' @export
 AED3_SSR.boundary <- function(rho, alpha, pstar) {
   N <- 500
@@ -434,6 +459,13 @@ AED3_SSR.boundary <- function(rho, alpha, pstar) {
   }
 
   k = uniroot(f, c(zp, 4))$root
+
+  cat("\n")
+  cat("Futility/Efficacy stopping boundaries for AED3-SSR:\n")
+  cat("\n")
+  cat("The futility stopping boundary = ", round(zp,3), ".\n")
+  cat("The efficacy stopping boundary = ", round(k,3), ".\n")
+  cat("\n")
   return(list(upper.boundary = k, lower.boundary = zp))
 }
 
@@ -449,7 +481,7 @@ AED3_SSR.boundary <- function(rho, alpha, pstar) {
 #'   adaptively enriched subgroup, we re-estimate the sample size to maintain an
 #'   adequate conditional power meanwhile protect the overall Type I error rate.
 #'
-#' @param N The sample size used at the first stage
+#' @param N1 The sample size used at the first stage
 #' @param rho The proportion of subgroup 1 among the overall patients
 #' @param alpha The overall Type I error rate
 #' @param beta The \code{(1 - Power)}
@@ -493,19 +525,22 @@ AED3_SSR.boundary <- function(rho, alpha, pstar) {
 #' pstar <- 0.20
 #' nSim <- 100
 #' Seed <- 6
-#' AED3_SSR.sim(N = N, rho = rho, alpha = alpha,
+#' res <- AED3_SSR.sim(N1 = N, rho = rho, alpha = alpha,
 #'              beta = beta, theta = theta, theta0 = theta0,
 #'              sigma0 = sigma0, pstar = pstar, nSim = nSim,
 #'              Seed = Seed)
 #' @export
 #'
-AED3_SSR.sim <- function(N, rho, alpha, beta, theta, theta0, sigma0, pstar, nSim, Seed) {
+AED3_SSR.sim <- function(N1, rho, alpha, beta, theta, theta0, sigma0, pstar, nSim, Seed) {
   set.seed(Seed)
   r <- 1
-  n1 <- r/(r + 1) * N
-  n11 <- N * rho
-  n12 <- N * (1 - rho)
+  n1 <- r/(r + 1) * N1
+  n11 <- N1 * rho
+  n12 <- N1 * (1 - rho)
   zp <- qnorm(1 - pstar)
+  cat("\n")
+  cat("## Summary of AED3-SSR:    \n")
+  cat("\n")
   k <- AED3_SSR.boundary(rho = rho, alpha = alpha, pstar = pstar)$upper.boundary
   zb <- qnorm(1 - beta)
   nTotal <- count1 <- count2 <- count3 <- count4 <- count5 <- count6 <- 0
@@ -610,6 +645,24 @@ AED3_SSR.sim <- function(N, rho, alpha, beta, theta, theta0, sigma0, pstar, nSim
       }
     }
   } # nSim
+  res <- matrix(NA, ncol = 5, nrow = 1)
+  res[,1] <- ceiling(nTotal)
+  res[,2] <- round((count1 + count2 + count3)/nSim*100,1)
+  res[,3] <- round(count1/nSim*100,1)
+  res[,4] <- round(count2/nSim*100,1)
+  res[,5] <- round(count3/nSim*100,1)
+  colnames(res) <- c("ESS", "H0", "H00", "H01", "H02")
+  row.names(res) <- "%"
+  cat("\n")
+  cat("The expected sample size and overall power: \n")
+  print(res)
+  cat("\n")
+  cat("Pr(Early stopping for futility) = ", round(count4/nSim*100,1), "%.\n")
+  cat("Pr(Early stopping for efficacy) = ",
+      round((count5 + count6 + count7 + count8 + count9)/nSim*100,1), "%.\n")
+  cat("Pr(Enrich subgroup 1) = ", round(trigger01/nSim*100,1), "%.\n")
+  cat("Pr(Enrich subgroup 2) = ", round(trigger02/nSim*100,1), "%.\n")
+
   return(list(nTotal = ceiling(nTotal), H00 = round(count1/nSim*100,1),
               H01 = round(count2/nSim*100,1), H02 = round(count3/nSim*100,1),
               H0 = round((count1 + count2 + count3)/nSim*100,1),
@@ -675,7 +728,7 @@ AED3_SSR.sim <- function(N, rho, alpha, beta, theta, theta0, sigma0, pstar, nSim
 #'
 #' @export
 AED3_SSR.CP <- function(Z1 = NULL, delta = NULL, N1 = NULL,
-                        pstar, rho, alpha, beta, N2){
+                        pstar, rho, alpha, beta, N2 = NULL){
   zp <- qnorm(1 - pstar)
   k <- AED3_SSR.boundary(rho = rho, alpha = alpha, pstar = pstar)$upper.boundary
   z1 <- Z1
@@ -687,12 +740,26 @@ AED3_SSR.CP <- function(Z1 = NULL, delta = NULL, N1 = NULL,
     A <- 1
   }
   za <- qnorm(1 - A)
-  cp <- 1 - pnorm(za - sqrt(N2/4)*delta)
-  c <- (sqrt(N1)*z1 + sqrt(N2)*za)/(sqrt(N1 + N2))
-  p <- 1 - pnorm(c)
+  if (!is.null(N2)) {
+    cp <- 1 - pnorm(za - sqrt(N2/4)*delta)
+    c <- (sqrt(N1)*z1 + sqrt(N2)*za)/(sqrt(N1 + N2))
+    p <- 1 - pnorm(c)
+    cat("\n")
+    cat("Conditional power analysis: \n")
+    cat("\n")
+    cat("The conditional power = ", round(cp*100,1), "%, given N2 = ", N2, ".\n")
+    cat("The exact critical value used at the final analysis = ", round(c, 3),
+        ", with the corresponding P-Value = ", round(p, 4), ".\n")
+    cat("\n")
+  }
+
   zb <- qnorm(1 - beta)
   N2.CP <- n1/2 * (za + zb)^2/z1^2
   c.CP <- (z1^2 + za*(za + zb))/(sqrt(z1^2 + (za + zb)^2))
+  cat("AED3-SSR: \n")
+  cat("The N2 required at the second stage = ", ceiling(N2.CP)*2, ".\n")
+  cat("The estimated critical value used at the final analysis = ", round(c.CP,3), ".\n")
+  cat("\n")
   return(list(N2 = N2, Conditional.Power = cp, P.Value = p,
               N2.CP = 2*ceiling(N2.CP),
               c.CP = c.CP))
@@ -797,6 +864,13 @@ AED2_SSR.boundary <- function(rho, alpha, pstar, epsilon) {
   }
 
   k = uniroot(f, c(zp, 4))$root
+
+  cat("\n")
+  cat("Futility/Efficacy stopping boundaries for AED2-SSR:\n")
+  cat("\n")
+  cat("The futility stopping boundary =", round(zp,3), ".\n")
+  cat("The efficacy stopping boundary =", round(k,3), ".\n")
+
   return(list(upper.boundary = k,
               lower.boundary = zp))
 }
@@ -810,7 +884,7 @@ AED2_SSR.boundary <- function(rho, alpha, pstar, epsilon) {
 #'   \eqn{\epsilon}-rule is introduced to select the subgroup with larger
 #'   subgroup-specific test statistic.
 #'
-#' @param N The sample size used in the first stage
+#' @param N1 The sample size used in the first stage
 #' @param rho The proportion of subgroup 1
 #' @param alpha The overall Type I error rate
 #' @param beta The (1 - power)
@@ -853,20 +927,23 @@ AED2_SSR.boundary <- function(rho, alpha, pstar, epsilon) {
 #' pstar <- 0.20
 #' nSim <- 1000
 #' Seed <- 6
-#' AED2_SSR.sim(N = N, rho = rho, alpha = alpha,
+#' res <- AED2_SSR.sim(N1 = N, rho = rho, alpha = alpha,
 #'              beta = beta, theta = theta, theta0 = theta0,
 #'              sigma0 = sigma0, pstar = pstar, epsilon = epsilon,
 #'              nSim = nSim, Seed = Seed)
 #' @export
 #'
-AED2_SSR.sim <- function(N, rho, alpha, beta, pstar, theta, theta0,
+AED2_SSR.sim <- function(N1, rho, alpha, beta, pstar, theta, theta0,
                          sigma0, epsilon, nSim, Seed) {
   set.seed(Seed)
   r <- 1
-  n1 <- r/(r + 1) * N
-  n11 <- N * rho
-  n12 <- N * (1 - rho)
+  n1 <- r/(r + 1) * N1
+  n11 <- N1 * rho
+  n12 <- N1 * (1 - rho)
   zp <- qnorm(1 - pstar)
+  cat("\n")
+  cat("## Summary of AED2-SSR:    \n")
+  cat("\n")
   k <- AED2_SSR.boundary(rho = rho, alpha = alpha, pstar = pstar,
                          epsilon = epsilon)$upper.boundary
   zb <- qnorm(1 - beta)
@@ -1003,6 +1080,23 @@ AED2_SSR.sim <- function(N, rho, alpha, beta, pstar, theta, theta0,
     }
 
   }
+  res <- matrix(NA, ncol = 5, nrow = 1)
+  res[,1] <- ceiling(nTotal)
+  res[,2] <- round((count1 + count2 + count3 + count6)/nSim*100,1)
+  res[,3] <- round((count1 + count6)/nSim*100,1)
+  res[,4] <- round(count2/nSim*100,1)
+  res[,5] <- round(count3/nSim*100,1)
+  colnames(res) <- c("ESS", "H0", "H00", "H01", "H02")
+  row.names(res) <- "%"
+  cat("\n")
+  cat("The expected sample size and overall power: \n")
+  print(res)
+  cat("\n")
+  cat("Pr(Early stopping for futility) = ", round(ESF/nSim*100,1), "%.\n")
+  cat("Pr(Early stopping for efficacy) = ", round(ESE/nSim*100,1), "%.\n")
+  cat("Pr(Enrich subgroup 1) = ", round(trigger01/nSim*100,1), "%.\n")
+  cat("Pr(Enrich subgroup 2) = ", round(trigger02/nSim*100,1), "%.\n")
+
   return(list(nTotal = ceiling(nTotal),
               H00 = round((count1 + count6)/nSim*100,1),
               H01 = round(count2/nSim*100,1),
@@ -1041,6 +1135,8 @@ AED2_SSR.sim <- function(N, rho, alpha, beta, pstar, theta, theta0,
 #'
 #' @return A list contains
 #' \itemize{
+#'   \item upper.boundary The efficacy stopping boundary
+#'   \item lower.boundary The futility stopping boundary
 #'   \item N2 The pre-specified sample size used at the second stage, which is
 #'           used to implement the conditional power analysis
 #'   \item Conditional.Power The value of conditional power given the value of \code{N2} in the
@@ -1064,14 +1160,14 @@ AED2_SSR.sim <- function(N, rho, alpha, beta, pstar, theta, theta0,
 #' rho <- 0.5
 #' epsilon <- 0.5
 #' beta <- 0.20
-#' N2 <- 108
-#' AED2_SSR.CP(Z1 = Z1, delta = delta, N1 = N1, pstar = pstar,
+#' N2 <- 104
+#' res <- AED2_SSR.CP(Z1 = Z1, delta = delta, N1 = N1, pstar = pstar,
 #'            alpha = alpha, rho = rho, epsilon = epsilon,
 #'            beta = beta, N2 = N2)
 #'
 #' @export
 AED2_SSR.CP <- function(Z1 = NULL, delta = NULL, N1 = NULL,
-                        pstar, rho, epsilon, alpha, beta, N2){
+                        pstar, rho, epsilon, alpha, beta, N2 = NULL){
   zp <- qnorm(1 - pstar)
   k <- AED2_SSR.boundary(rho = rho, alpha = alpha, pstar = pstar, epsilon = epsilon)$upper.boundary
   z1 <- Z1
@@ -1083,13 +1179,29 @@ AED2_SSR.CP <- function(Z1 = NULL, delta = NULL, N1 = NULL,
     A <- 1
   }
   za <- qnorm(1 - A)
-  cp <- 1 - pnorm(za - sqrt(N2/4)*delta)
-  c <- (sqrt(N1)*z1 + sqrt(N2)*za)/(sqrt(N1 + N2))
-  p <- 1 - pnorm(c)
+  if (!is.null(N2)) {
+    cp <- 1 - pnorm(za - sqrt(N2/4)*delta)
+    c <- (sqrt(N1)*z1 + sqrt(N2)*za)/(sqrt(N1 + N2))
+    p <- 1 - pnorm(c)
+    cat("\n")
+    cat("Conditional power analysis of AED2-SSR: \n")
+    cat("The conditional power = ", round(cp*100,1), "% given N2 = ", N2, ".\n")
+    cat("The exact critical value used at the final analysis = ", round(c, 3),
+        ", with corresponding P-Value = ", round(p,3), ".\n")
+    cat("\n")
+  }
+
   zb <- qnorm(1 - beta)
   N2.CP <- n1/2 * (za + zb)^2/z1^2
   c.CP <- (z1^2 + za*(za + zb))/(sqrt(z1^2 + (za + zb)^2))
-  return(list(N2 = N2, cp = cp, p = p, N2.CP = 2*ceiling(N2.CP), c.CP = c.CP))
+  cat("\n")
+  cat("The N2 required at the second stage = ", ceiling(N2.CP)*2, ".\n")
+  cat("The estimated critical value used at the final analysis = ", round(c.CP,3),
+      ".\n")
+  cat("\n")
+  return(list(upper.boundary = k, lower.boundary = zp,
+              N2 = N2, Conditional.Power = cp, P.Value = p,
+              N2.CP = 2*ceiling(N2.CP), c.CP = c.CP))
 }
 
 
@@ -1103,79 +1215,89 @@ AED2_SSR.CP <- function(Z1 = NULL, delta = NULL, N1 = NULL,
 #'   strategy is guided by a pre-specified futility stopping boundary and a
 #'   threshold of the difference between the subgroup-specific test statistics.
 #'
-#' @param alpha The overall Type I error rate
+#' @param rho The proportion of subgroup 1.
+#' @param alpha The overall Type I error rate.
+#' @param pstar The \code{(1 - power)} of accepting the null hypothesis at the
+#'    interim analysis.
 #' @param Info The observation information, which is commonly calculated through
 #'   the sample size used at each stage of the trial.
-#' @param K The number of subgroups. The default value is 2.
+#' @param epsilon The threshold of the difference between subgroup-specific test
+#'   statistics.
 #'
 #' @import stats
 #'
 #' @references
 #' \itemize{
-#'   \item Chang, M., and Wang, J. (2015). The add-arm design for unimodal
-#'         response curve with unknown mode. Journal of biopharmaceutical
-#'         statistics, 25(5), 1039-1064. <doi:10.1080/10543406.2014.971164.>
 #'   \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
 #'     Re-estimation in Adaptive Enrichment Trials. (In preparation)
 #' }
 #'
 #' @examples
-#' alpha <- 0.05
-#' Info <- 0.5
-#' K <- 2
-#' AED1_SSR.boundary(alpha = alpha, Info = Info, K = K)
-#'
+#' AED1_SSR.boundary(rho = 0.5, alpha = 0.05, pstar = 0.2, Info = 0.5, epsilon = 0.5)
 #' @export
 #'
-AED1_SSR.boundary <- function(alpha, Info, K = 2) {
-  innerFunc3 <- function(z) {
-    innerFunc1 <- function(tau, t) {
-      pnorm( (t - tau*sqrt(1 - Info))/sqrt(Info) )**K * dnorm(tau)
+AED1_SSR.boundary <- function(rho, alpha, pstar, Info, epsilon) {
+  N <- 500
+  n11 <- rho*N
+  n12 <- (1 - rho)*N
+  zp <- qnorm(1 - pstar)
+  a <- sqrt(n11/(n11 + n12))
+  b <- sqrt(n12/(n11 + n12))
+
+  Func <- function(C) {
+    f1 <- function(a, b, C, epsilon, z11, z12, Info) {
+      z1 <- a*z11 + b*z12
+      (1 - pnorm( (C - sqrt(Info)*z1)/sqrt(1 - Info)))*dnorm(z11)*dnorm(z12)
     }
-    innerFunc2 <- function(t,z) {
-      sapply(t, function(t) {
-        integrate(innerFunc1, -Inf, Inf, t = t)$value * dnorm(sqrt(2)*z - t)
+    inte1Func <- function(z12) {
+      sapply(z12, function(z12){
+        integrate(f1, zp, z12 + epsilon,
+                  z12 = z12, epsilon = epsilon, a = a, b = b,
+                  C = C, Info = Info)$value
       })
     }
-    integrate(innerFunc2, -Inf, Inf, z = z)$value + alpha - 1
+    f12 <- function(a, b, C, epsilon, z11, z12, Info) {
+      z1 <- a*z11 + b*z12
+      (1 - pnorm( (C - sqrt(Info)*z1)/sqrt(1 - Info)))*dnorm(z12)*dnorm(z11)
+    }
+    inte2Func <- function(z11) {
+      sapply(z11, function(z11) {
+        integrate(f12, zp, z11 + epsilon,
+                  z11 = z11, epsilon = epsilon, a = a, b = b,
+                  C = C, Info = Info)$value
+      })
+    }
+
+    f2 <- function(z11, z12, Info, epsilon, C) {
+      (1 - pnorm( (C - sqrt(Info)*z11)/sqrt(1 - Info)))*dnorm(z11)*dnorm(z12)
+    }
+    inte3Func <- function(z12) {
+      sapply(z12, function(z12){
+        integrate(f2, pmin(z12 + epsilon, zp ), C,
+                  z12 = z12, Info = Info,
+                  epsilon = epsilon, C = C)$value
+      })
+    }
+
+    f3 <- function(z11, z12, Info, epsilon, C) {
+      (1 - pnorm( (C - sqrt(Info)*z12)/sqrt(1 - Info)))*dnorm(z12)*dnorm(z11)
+    }
+    inte4Func <- function(z11) {
+      sapply(z11, function(z11){
+        integrate(f3, pmin(z11 + epsilon,zp), C,
+                  z11 = z11, Info = Info,
+                  epsilon = epsilon, C = C)$value
+      })
+    }
+
+    (integrate(inte1Func, zp, Inf)$value +
+        integrate(inte2Func, zp, Inf)$value +
+        integrate(inte3Func, -Inf, zp)$value +
+        integrate(inte4Func, -Inf, zp)$value + 2*(1 - pnorm(C))) - alpha
   }
-
-  c <- uniroot(innerFunc3, c(-5, 5))$root
-  return(c)
+  c <- uniroot(Func, c(zp,4))$root
+  return(C = c)
 }
-
-
-#' @title Calculate the reduced significant level in the Adaptive Enrichment Design
-#'   (Strategy 1) with Sample Size Re-estimation Procedure
-#'
-#' @description The \code{AED1_SSR.SigP()} is used to calculate the reduced
-#'   significant level to protect the overall Type I error rate
-#'
-#' @param alpha The overall Type I error rate
-#'
-#' @return The Value of the reduced significant level
-#'
-#' @references
-#' \itemize{
-#'  \item Proschan MA, Hunsberger SA. Designed extension of studies based on
-#'          conditional power. Biometrics 1995:1315-24. <doi:10.2307/2533262>
-#'  \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
-#'     Re-estimation in Adaptive Enrichment Trials. (In Preparation)
-#' }
-#'
-#' @examples
-#' alpha <- 0.05
-#' AED1_SSR.SigP(alpha = alpha)
-#'
-#' @export
-AED1_SSR.SigP <- function(alpha) {
-  func <- function(x) {
-    alpha - x - exp(-qnorm(x)^2/2)/4
-  }
-  SigL <- uniroot(func, c(0,alpha))$root
-  return(SigL)
-}
-AED1_SSR.SigP(alpha = 0.05)
 
 #' @title Calculate the sample size required at the second stage of the adaptive
 #'   enrichment design (Strategy1) with Sample Size Re-estimation Procedure
@@ -1221,10 +1343,12 @@ AED1_SSR.N2 <- function(c, z1, N1, beta) {
 #'   of the Adaptive Enrichment Design (Strategy 1) with Sample Size Re-estimation
 #'   procedure
 #'
-#' @param N The sample size used at the first stage
+#' @param N1 The sample size used at the first stage
 #' @param rho The proportion of subgroup 1 among the overall patients
 #' @param alpha The overall Type I error rate
 #' @param beta The (1 - Power)
+#' @param pstar The \code{(1 - power)} of accepting the null hypothesis at the
+#'    interim analysis.
 #' @param theta The sizes of the treatment effect in subgroups 1 and 2 with the
 #'   experimental arm
 #' @param theta0 The size of the treatment effect in standard arm
@@ -1256,31 +1380,26 @@ AED1_SSR.N2 <- function(c, z1, N1, beta) {
 #' }
 #'
 #' @examples
-#' N <- 310
-#' rho <- 0.5
-#' alpha <- 0.025
-#' beta <- 0.2
-#' theta <- c(0,0)
-#' theta0 <- 0
-#' Info <- 0.5
-#' epsilon <- 0.5
-#' sigma0 <- 1
-#' nSim <- 1000
-#' Seed <- 6
-#' AED1_SSR.sim(N = N, rho = rho, alpha = alpha, beta = beta,
-#'              theta = theta, theta0 = theta0, Info = Info,
-#'              epsilon = epsilon, sigma0 = sigma0, nSim = nSim, Seed = Seed)
+#' res <- AED1_SSR.sim(
+#'   N1 = 310, rho = 0.5,
+#'   alpha = 0.05, beta = 0.2, pstar = 0.2,
+#'   theta = c(0,0), theta0 = 0, Info = 0.5,
+#'   epsilon = 0.5, sigma0 = 1, nSim = 1000, Seed = 6)
 #' @export
-AED1_SSR.sim <- function(N, rho, alpha, beta,
+AED1_SSR.sim <- function(N1, rho, alpha, beta, pstar,
                          theta, theta0, Info, K = 2, epsilon, sigma0,
                          nSim, Seed) {
   set.seed(Seed)
-  zalpha <- AED1_SSR.boundary(alpha = alpha, Info = Info, K = K)
-  c <- round(AED1_SSR.boundary(alpha = alpha, Info = Info, K = K),3)
+  cat("\n")
+  cat("## Summary of AED1-SSR:    \n")
+  cat("\n")
+  zalpha <- AED1_SSR.boundary(rho = rho, alpha = alpha, pstar = pstar,
+                              Info = Info, epsilon = epsilon)
+  c <- round(zalpha,3)
   zb <- pnorm(1-beta)
-  n11 <- rho * N
-  n12 <- (1 - rho) * N
-  n1 <- 0.5*N
+  n11 <- rho * N1
+  n12 <- (1 - rho) * N1
+  n1 <- 0.5*N1
 
   count1 <- count2 <- count3 <-  nTotal <- 0
   Trigger01 <- Trigger02 <- ESE <- ESF <- 0
@@ -1329,7 +1448,7 @@ AED1_SSR.sim <- function(N, rho, alpha, beta,
           ESE <- ESE + 1/nSim
           count3 <- count3 + 1
         } else {
-          n2 <- 0.5*AED1_SSR.N2(c = zalpha, z1 = z1, N1 = N, beta = beta)
+          n2 <- 0.5*AED1_SSR.N2(c = zalpha, z1 = z1, N1 = N1, beta = beta)
 
           if (is.na(n2)) {
             next
@@ -1383,7 +1502,7 @@ AED1_SSR.sim <- function(N, rho, alpha, beta,
           ESE <- ESE + 1/nSim
           count3 <- count3 + 1
         } else {
-          n2 <- 0.5*AED1_SSR.N2(c = zalpha, z1 = z1, N1 = N, beta = beta)
+          n2 <- 0.5*AED1_SSR.N2(c = zalpha, z1 = z1, N1 = N1, beta = beta)
 
           if (is.na(n2)) {
             next
@@ -1409,6 +1528,23 @@ AED1_SSR.sim <- function(N, rho, alpha, beta,
       }
     }
   } ## nSim
+  res <- matrix(NA, ncol = 5, nrow = 1)
+  res[,1] <- ceiling(nTotal)
+  res[,2] <- round((count1 + count2 + count3)/nSim*100,1)
+  res[,3] <- round(count3/nSim*100,1)
+  res[,4] <- round(count1/nSim*100,1)
+  res[,5] <- round(count2/nSim*100,1)
+  colnames(res) <- c("ESS", "H0", "H00", "H01", "H02")
+  row.names(res) <- "%"
+  cat("\n")
+  cat("The expected sample size and overall power: \n")
+  print(res)
+  cat("\n")
+  cat("Pr(Early stopping for futility) = ", round(ESF*100,1), "%.\n")
+  cat("Pr(Early stopping for efficacy) = ", round(ESE*100,1), "%.\n")
+  cat("Pr(Enrich subgroup 1) = ", round(Trigger01*100,1), "%.\n")
+  cat("Pr(Enrich subgroup 2) = ", round(Trigger02*100,1), "%.\n")
+  cat("\n")
   return(list(nTotal = ceiling(nTotal),
               H00 = round(count3/nSim*100,1),
               H01 = round(count1/nSim*100,1),
@@ -1416,10 +1552,7 @@ AED1_SSR.sim <- function(N, rho, alpha, beta,
               H0  = round((count1 + count2 + count3)/nSim*100,1),
               ESF = round(ESF*100,1), ESE = round(ESE*100,1),
               Enrich01 = round(Trigger01*100,1),
-              Enrich02 = round(Trigger02*100,1)#,
-              #CP = cp/(nSim - count4)
-  )
-  )
+              Enrich02 = round(Trigger02*100,1)))
 }
 
 #' @title Calculate the conditional power of the Adaptive Enrichment Design with
@@ -1430,12 +1563,15 @@ AED1_SSR.sim <- function(N, rho, alpha, beta,
 #'    re-estimation procedure
 #'
 #' @param c The critical value used at the final analysis
-#' @param z1 The test statistic obtained at the interim analysis
+#' @param Z1 The test statistic obtained at the interim analysis
 #' @param N1 The sample size used at the first stage
 #' @param N2 The sample size used at the second stage
 #'
-#' @return The value of the conditional power in the Adaptive Enrichment Design
-#'   (Strategy 1) with Sample Size Re-estimation Procedure
+#' @return A list contains
+#' \itemize{
+#'   \item Critical.Value The critical value used at the final analysis
+#'   \item Conditional.Power The value of conditional power given the observed data
+#' }
 #'
 #' @references
 #' \itemize{
@@ -1445,15 +1581,17 @@ AED1_SSR.sim <- function(N, rho, alpha, beta,
 #'
 #' @examples
 #' c <- 2.258
-#' z1 <- 1.975
+#' Z1 <- 1.975
 #' N1 <- 248
 #' N2 <- 200
-#' AED1_SSR.CP(c = 2.258, z1 = 1.974, N1 = 248, N2 = 200)
+#' AED1_SSR.CP(c = 2.258, Z1 = 1.974, N1 = 248, N2 = 200)
 #' @export
-AED1_SSR.CP <- function(c, z1, N1, N2) {
+AED1_SSR.CP <- function(c, Z1, N1, N2) {
   t <- N1/(N1 + N2)
-  cp <- 1 - pnorm((c - z1/sqrt(t))/(sqrt(1 - t)))
-  return(list(Conditional.Power = cp))
+  cp <- 1 - pnorm((c - Z1/sqrt(t))/(sqrt(1 - t)))
+  return(list(
+    Critical.Value = c,
+    Conditional.Power = cp))
 }
 
 
@@ -1550,6 +1688,79 @@ MaST.sim <- function(N, rho, alpha, beta,
 }
 
 
+#' @title Calculate the critical value used at the final analysis in APE
+#'
+#' @description \code{AED.boundary()} is used to calculate the critical value
+#'     used at the final analysis in APE design, meanwhile preserving the overall
+#'     type I error rate at \eqn{\alpha} level
+#'
+#' @param rho The proportion of subgroup 1
+#' @param alpha The overall type I error rate
+#' @param Info The infromation fraction
+#' @param epsilon The threshold of difference between the subgroup-specific test
+#'   statistics
+#'
+#' @return The critical value used at the final analysis
+#'
+#' @references
+#' \itemize{
+#'   \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
+#'     Re-estimation in Adaptive Enrichment Trials. (Under Preparation)
+#' }
+#'
+#' @examples
+#' AED.boundary(rho = 0.5, alpha = 0.05, Info = 0.5, epsilon = 0.5)
+#' @export
+AED.boundary <- function(rho, alpha, Info, epsilon) {
+  N <- 500
+  n11 <- N * rho  ## total sample size used in stage 1
+  n12 <- N * (1 - rho) ## total sample size used to subgroup 2 in stage 2
+  #zp <- qnorm(1 - pstar)    ## quantile of power (conditional power)
+  a <- sqrt(n11/(n11 + n12))  ## weight for subgroup 1
+  b <- sqrt(n12/(n11 + n12))  ## weight for subgroup 2
+  ##
+  Func <- function(C) {
+    f1 <- function(C, z11, z12, a, b, Info, epsilon) {
+      z1 <- a*z11 + b*z12
+      (1 - pnorm((C - sqrt(Info)*z1)/sqrt(1 - Info)))*dnorm(z11)*dnorm(z12)
+    }
+    inte1Func <- function(z12) {
+      sapply(z12, function(z12) {
+        integrate(f1, z12 - epsilon, z12 + epsilon,
+                  a = a, b = b, epsilon = epsilon, z12 = z12,
+                  C = C, Info = Info)$value
+      })
+    }
+
+    f3 <- function(z11, z12, C, Info, epsilon) {
+      (1 - pnorm((C - sqrt(Info)*z11)/sqrt(1 - Info)))*dnorm(z11)*dnorm(z12)
+    }
+    inte3Func <- function(z12) {
+      sapply(z12, function(z12){
+        integrate(f3, z12 + epsilon, Inf,
+                  z12 = z12, epsilon = epsilon,
+                  Info = Info, C = C)$value
+      })
+    }
+    f4 <- function(z11, z12, C, Info, epsilon) {
+      (1 - pnorm((C - sqrt(Info)*z12)/sqrt(1 - Info)))*dnorm(z12)*dnorm(z11)
+    }
+    inte4Func <- function(z11) {
+      sapply(z11, function(z11){
+        integrate(f4, z11 + epsilon,Inf, epsilon = epsilon,
+                  C = C, Info = Info, z11 = z11)$value
+      })
+    }
+    integrate(inte1Func, -Inf, Inf)$value +
+      integrate(inte3Func, -Inf, Inf)$value +
+      integrate(inte4Func, -Inf, Inf)$value  - alpha
+  }
+
+  c <- uniroot(Func, c(-400,400))$root
+  return(C = c)
+}
+
+
 #' @title Conduct the simulation studies of the Adaptive Enrichment Design without
 #'   early stopping boundary
 #'
@@ -1618,7 +1829,7 @@ AED.sim <- function(N1, N2, rho, alpha, beta,
                     theta, theta0, K, Info,epsilon, sigma0,
                     nSim, Seed) {
   set.seed(Seed)
-  c <- round(AED1_SSR.boundary(alpha = alpha, Info = Info, K = K),3)
+  c <- round(AED.boundary(rho = rho, alpha = alpha, Info = Info, epsilon = epsilon),3)
   n11 <- rho * N1
   n12 <- (1 - rho) * N1
   n1 <- 0.5*N1
@@ -1730,9 +1941,3 @@ AED.sim <- function(N1, N2, rho, alpha, beta,
   )
 }
 
-
-release_questions <- function() {
-  c(
-    "Have you run all the demos?"
-  )
-}
