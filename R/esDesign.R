@@ -1228,8 +1228,9 @@ AED2_SSR.CP <- function(Z1 = NULL, delta = NULL, N1 = NULL,
 #'
 #' @references
 #' \itemize{
-#'   \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
-#'     Re-estimation in Adaptive Enrichment Trials. (In preparation)
+#'   \item Lin, R., Yang, Z., Yuan, Y. and Yin, G., 2021. Sample size re-estimation
+#'    in adaptive enrichment design. Contemporary Clinical Trials, 100, p.106216.
+#'    <doi: 10.1016/j.cct.2020.106216>
 #' }
 #'
 #' @examples
@@ -1315,8 +1316,9 @@ AED1_SSR.boundary <- function(rho, alpha, pstar, Info, epsilon) {
 #'
 #' @references
 #' \itemize{
-#'   \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
-#'     Re-estimation in Adaptive Enrichment Trials. (Under Preparation)
+#'   \item Lin, R., Yang, Z., Yuan, Y. and Yin, G., 2021. Sample size re-estimation
+#'    in adaptive enrichment design. Contemporary Clinical Trials, 100, p.106216.
+#'    <doi: 10.1016/j.cct.2020.106216>
 #' }
 #'
 #' @examples
@@ -1362,8 +1364,9 @@ AED1_SSR.N2 <- function(c, z1, N1, beta) {
 #'
 #' @references
 #' \itemize{
-#'   \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
-#'     Re-estimation in Adaptive Enrichment Trials. (Under Preparation)
+#'   \item Lin, R., Yang, Z., Yuan, Y. and Yin, G., 2021. Sample size re-estimation
+#'    in adaptive enrichment design. Contemporary Clinical Trials, 100, p.106216.
+#'    <doi: 10.1016/j.cct.2020.106216>
 #' }
 #'
 #' @return A list contains
@@ -1575,8 +1578,9 @@ AED1_SSR.sim <- function(N1, rho, alpha, beta, pstar,
 #'
 #' @references
 #' \itemize{
-#'   \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
-#'     Re-estimation in Adaptive Enrichment Trials. (Under Preparation)
+#'   \item Lin, R., Yang, Z., Yuan, Y. and Yin, G., 2021. Sample size re-estimation
+#'    in adaptive enrichment design. Contemporary Clinical Trials, 100, p.106216.
+#'    <doi: 10.1016/j.cct.2020.106216>
 #' }
 #'
 #' @examples
@@ -1688,10 +1692,10 @@ MaST.sim <- function(N, rho, alpha, beta,
 }
 
 
-#' @title Calculate the critical value used at the final analysis in APE
+#' @title Calculate the critical value used at the final analysis in AED
 #'
 #' @description \code{AED.boundary()} is used to calculate the critical value
-#'     used at the final analysis in APE design, meanwhile preserving the overall
+#'     used at the final analysis in AED design, meanwhile preserving the overall
 #'     type I error rate at \eqn{\alpha} level
 #'
 #' @param rho The proportion of subgroup 1
@@ -1704,8 +1708,9 @@ MaST.sim <- function(N, rho, alpha, beta,
 #'
 #' @references
 #' \itemize{
-#'   \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
-#'     Re-estimation in Adaptive Enrichment Trials. (Under Preparation)
+#'   \item Lin, R., Yang, Z., Yuan, Y. and Yin, G., 2021. Sample size re-estimation
+#'    in adaptive enrichment design. Contemporary Clinical Trials, 100, p.106216.
+#'    <doi: 10.1016/j.cct.2020.106216>
 #' }
 #'
 #' @examples
@@ -1802,8 +1807,9 @@ AED.boundary <- function(rho, alpha, Info, epsilon) {
 #'
 #' @references
 #' \itemize{
-#'   \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
-#'     Re-estimation in Adaptive Enrichment Trials. (Under Preparation)
+#'   \item Lin, R., Yang, Z., Yuan, Y. and Yin, G., 2021. Sample size re-estimation
+#'    in adaptive enrichment design. Contemporary Clinical Trials, 100, p.106216.
+#'    <doi: 10.1016/j.cct.2020.106216>
 #' }
 #'
 #' @examples

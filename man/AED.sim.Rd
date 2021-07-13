@@ -5,8 +5,21 @@
 \title{Conduct the simulation studies of the Adaptive Enrichment Design without
   early stopping boundary}
 \usage{
-AED.sim(N1, N2, rho, alpha, beta, theta, theta0, K, Info, epsilon, sigma0,
-  nSim, Seed)
+AED.sim(
+  N1,
+  N2,
+  rho,
+  alpha,
+  beta,
+  theta,
+  theta0,
+  K,
+  Info,
+  epsilon,
+  sigma0,
+  nSim,
+  Seed
+)
 }
 \arguments{
 \item{N1}{The sample size used at the first stage}
@@ -80,7 +93,8 @@ AED.sim(N1 = N1, N2 = N2, rho = rho, alpha = alpha,
 }
 \references{
 \itemize{
-  \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
-    Re-estimation in Adaptive Enrichment Trials. (Under Preparation)
+  \item Lin, R., Yang, Z., Yuan, Y. and Yin, G., 2021. Sample size re-estimation
+   in adaptive enrichment design. Contemporary Clinical Trials, 100, p.106216.
+   <doi: 10.1016/j.cct.2020.106216>
 }
 }

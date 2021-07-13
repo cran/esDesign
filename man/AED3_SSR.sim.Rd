@@ -7,8 +7,7 @@
        Futility and Efficacy Stopping Boundaries for the continuous
        endpoint}
 \usage{
-AED3_SSR.sim(N1, rho, alpha, beta, theta, theta0, sigma0, pstar, nSim,
-  Seed)
+AED3_SSR.sim(N1, rho, alpha, beta, theta, theta0, sigma0, pstar, nSim, Seed)
 }
 \arguments{
 \item{N1}{The sample size used at the first stage}

@@ -5,8 +5,7 @@
 \title{Calculate the \eqn{N2} and the critical value \eqn{C} in Sample Size
   Re-estimation Procedure}
 \usage{
-SSR.CP(Z1 = NULL, delta = NULL, N1 = NULL, pstar, alpha, beta,
-  N2 = NULL)
+SSR.CP(Z1 = NULL, delta = NULL, N1 = NULL, pstar, alpha, beta, N2 = NULL)
 }
 \arguments{
 \item{Z1}{The test statistic obtained at the interim analysis}

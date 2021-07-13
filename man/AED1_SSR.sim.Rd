@@ -5,8 +5,21 @@
 \title{Conduct the simulation studies of the Adaptive Enrichment Design
   (Strategy 1) with Sample Size Re-estimation Procedure}
 \usage{
-AED1_SSR.sim(N1, rho, alpha, beta, pstar, theta, theta0, Info, K = 2,
-  epsilon, sigma0, nSim, Seed)
+AED1_SSR.sim(
+  N1,
+  rho,
+  alpha,
+  beta,
+  pstar,
+  theta,
+  theta0,
+  Info,
+  K = 2,
+  epsilon,
+  sigma0,
+  nSim,
+  Seed
+)
 }
 \arguments{
 \item{N1}{The sample size used at the first stage}
@@ -66,7 +79,8 @@ res <- AED1_SSR.sim(
 }
 \references{
 \itemize{
-  \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
-    Re-estimation in Adaptive Enrichment Trials. (Under Preparation)
+  \item Lin, R., Yang, Z., Yuan, Y. and Yin, G., 2021. Sample size re-estimation
+   in adaptive enrichment design. Contemporary Clinical Trials, 100, p.106216.
+   <doi: 10.1016/j.cct.2020.106216>
 }
 }

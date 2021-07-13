@@ -2,7 +2,7 @@
 % Please edit documentation in R/esDesign.R
 \name{AED.boundary}
 \alias{AED.boundary}
-\title{Calculate the critical value used at the final analysis in APE}
+\title{Calculate the critical value used at the final analysis in AED}
 \usage{
 AED.boundary(rho, alpha, Info, epsilon)
 }
@@ -21,7 +21,7 @@ The critical value used at the final analysis
 }
 \description{
 \code{AED.boundary()} is used to calculate the critical value
-    used at the final analysis in APE design, meanwhile preserving the overall
+    used at the final analysis in AED design, meanwhile preserving the overall
     type I error rate at \eqn{\alpha} level
 }
 \examples{
@@ -29,7 +29,8 @@ AED.boundary(rho = 0.5, alpha = 0.05, Info = 0.5, epsilon = 0.5)
 }
 \references{
 \itemize{
-  \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
-    Re-estimation in Adaptive Enrichment Trials. (Under Preparation)
+  \item Lin, R., Yang, Z., Yuan, Y. and Yin, G., 2021. Sample size re-estimation
+   in adaptive enrichment design. Contemporary Clinical Trials, 100, p.106216.
+   <doi: 10.1016/j.cct.2020.106216>
 }
 }

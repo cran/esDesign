@@ -5,8 +5,16 @@
 \title{Calculate the \eqn{N2} and the critical value \eqn{C} in the Adaptive
   Enrichment Design (Strategy 3) with Sample Size Re-estimation Procedure}
 \usage{
-AED3_SSR.CP(Z1 = NULL, delta = NULL, N1 = NULL, pstar, rho, alpha,
-  beta, N2 = NULL)
+AED3_SSR.CP(
+  Z1 = NULL,
+  delta = NULL,
+  N1 = NULL,
+  pstar,
+  rho,
+  alpha,
+  beta,
+  N2 = NULL
+)
 }
 \arguments{
 \item{Z1}{The test statistic obtained at the interim analysis}

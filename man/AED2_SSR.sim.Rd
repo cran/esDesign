@@ -5,8 +5,19 @@
 \title{Conduct the simulation studies of the Adaptive Enrichment Design (Strategy 2)
   with Sample Size Re-estimation Procedure}
 \usage{
-AED2_SSR.sim(N1, rho, alpha, beta, pstar, theta, theta0, sigma0, epsilon,
-  nSim, Seed)
+AED2_SSR.sim(
+  N1,
+  rho,
+  alpha,
+  beta,
+  pstar,
+  theta,
+  theta0,
+  sigma0,
+  epsilon,
+  nSim,
+  Seed
+)
 }
 \arguments{
 \item{N1}{The sample size used in the first stage}

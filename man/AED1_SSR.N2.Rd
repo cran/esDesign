@@ -34,7 +34,8 @@ AED1_SSR.N2(c = c, z1 = z1, N1 = N1, beta = beta)
 }
 \references{
 \itemize{
-  \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
-    Re-estimation in Adaptive Enrichment Trials. (Under Preparation)
+  \item Lin, R., Yang, Z., Yuan, Y. and Yin, G., 2021. Sample size re-estimation
+   in adaptive enrichment design. Contemporary Clinical Trials, 100, p.106216.
+   <doi: 10.1016/j.cct.2020.106216>
 }
 }

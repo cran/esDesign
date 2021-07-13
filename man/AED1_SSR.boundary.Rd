@@ -34,7 +34,8 @@ AED1_SSR.boundary(rho = 0.5, alpha = 0.05, pstar = 0.2, Info = 0.5, epsilon = 0.
 }
 \references{
 \itemize{
-  \item Zhao Yang, Ruitao Lin, Guosheng Yin and Ying Yuan. (2018) Sample Size
-    Re-estimation in Adaptive Enrichment Trials. (In preparation)
+  \item Lin, R., Yang, Z., Yuan, Y. and Yin, G., 2021. Sample size re-estimation
+   in adaptive enrichment design. Contemporary Clinical Trials, 100, p.106216.
+   <doi: 10.1016/j.cct.2020.106216>
 }
 }
